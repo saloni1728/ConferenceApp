@@ -21,18 +21,19 @@ const SearchSessions = (props) => {
     return (
         <View style={sharedStyles.container}>
             <TextInput
-                ref={(ref) => this.textInput = ref}
+                ref={(ref) => {this.textInput = ref}}
                 style={sharedStyles.searchInput}
+                value={searchText}
                 onChangeText={(text) => handleSearch(text)}
-                placeholder='SearchSessions'
-                returnKeyType={'go'}
+                placeholder='Search Sessions'
+                returnKeyType='go'
                 autoCorrect={false}
                 autoFocus={false}
                 keyboardType={'default'}
                 multiline={false}
                 selectionColor={'green'}
             />
-            <Pressable onPress={clearSearch} style={sharedStyles.container}>
+            <Pressable onPress={clearSearch} style={sharedStyles.clearContainer}>
                 <Image
                     style={sharedStyles.clearImage}
                     source={require('../../images/multiply-1_Orange.png')} />
@@ -48,7 +49,7 @@ const renderItem = ({ item, index }) => {
                 id={index}
                 name={item.name}
                 bio={item.bio}
-                sessions={item.sessions[0].name}
+                session={item.sessions[0].name}
             />
         </View>
     )
@@ -57,9 +58,9 @@ const renderItem = ({ item, index }) => {
 const SpeakerList = ({ id, session, bio, name }) => {
     return (
         <View style={sharedStyles.sectionContainer} key={id}>
-            <Text style={sharedStyles.sectionTitle}>{'Speaker Name : ' + name}+</Text>
-            <Text style={sharedStyles.sectionTitle}>{'bio: ' + bio}+</Text>
-            <Text style={sharedStyles.sectionTitle}>{'Session : ' + session}+</Text>
+            <Text style={sharedStyles.sectionTitle}>{`Speaker Name :${name}`}+</Text>
+            <Text style={sharedStyles.sectionDescription}>{'Bio : '+ bio}+</Text>
+            <Text style={sharedStyles.sectionDescriptionBold}>{'Session : '+ session}+</Text>
         </View>
     )
 }
@@ -85,11 +86,11 @@ const FooterComponent=()=>{
 export const Speakers = ({ navigation }) => {
     const [filteredSpeakers, setFilteredSpeakers] = useState(speakers);
     const getSearchText = (text) => {
-        let filteredSpeakersList = speakers.filter((value) => {
-            value.sessions[0].name.toLowerCase().includes(text.toLowerCase());
-        })
+        var filteredSpeakersList = speakers.filter((value) => 
+            value.sessions[0].name.toLowerCase().includes(text.toLowerCase())
+        )
         setFilteredSpeakers(filteredSpeakersList);
-    }
+    };
     return (
         <View>
             <SearchSessions getSearchText={getSearchText} />
